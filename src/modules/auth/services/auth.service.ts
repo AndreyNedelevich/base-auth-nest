@@ -21,6 +21,9 @@ export class AuthService {
     private readonly refreshRepository: RefreshTokenRepository,
   ) {}
 
+  // Redis = access token (быстрый, временный)
+  // БД = refresh token (долгий, контролируемый)
+
   public async signUp(dto: CreateUserDto): Promise<AuthUserResponseDto> {
     const { hash, salt } = CryptoHelper.hashPassword(dto.password);
     const user = await this.userRepository.save(

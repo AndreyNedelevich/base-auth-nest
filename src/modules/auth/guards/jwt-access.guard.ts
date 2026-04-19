@@ -17,6 +17,7 @@ import { AuthCacheService } from '../services/auth-cache.service';
 export class JwtAccessGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
+    // Reflector = “прочитай данные, которые кто-то записал через декоратор”
     private tokenService: TokenService,
     private authCacheService: AuthCacheService,
     private userRepository: UserRepository,
@@ -54,6 +55,7 @@ export class JwtAccessGuard implements CanActivate {
     const user = await this.userRepository.findOneBy({
       id: payload.userId,
     });
+
     if (!user) {
       throw new UnauthorizedException();
     }

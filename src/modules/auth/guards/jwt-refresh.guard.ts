@@ -11,6 +11,11 @@ import { UserMapper } from '../../user/services/user.mapper';
 import { TokenType } from '../modules/token/enums/token-type.enum';
 import { TokenService } from '../modules/token/token.service';
 
+// проверяет refresh token
+// проверяет его в БД
+// проверяет пользователя
+// кладёт user в request
+
 @Injectable()
 export class JwtRefreshGuard implements CanActivate {
   constructor(
