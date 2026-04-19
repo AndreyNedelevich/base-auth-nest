@@ -1,9 +1,6 @@
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-// Это базовая модель для всех таблиц, которая автоматически добавляет:
 
-// created → когда запись создана
-// updated → когда запись обновлена
 export class CreatedUpdatedDateModel {
   @CreateDateColumn({
     type: 'timestamptz',

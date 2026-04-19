@@ -14,7 +14,6 @@ import { AppConfig, SwaggerConfig } from './config/config.types';
 
 function initSwagger(app: INestApplication): void {
   const configService = app.get<ConfigService>(ConfigService);
-  // “достаем настройки приложения (например порт и хост) из конфигурации”
   const swaggerConfig: SwaggerConfig = configService.get('swagger');
 
   if (!swaggerConfig.isEnabled) return;
@@ -72,18 +71,6 @@ async function bootstrap() {
   const appConfig: AppConfig = configService.get('app');
 
   app.useGlobalFilters(new GlobalExceptionFilter());
-  // Это глобальная обработка ошибок.
-  //
-  // Если где-то в приложении происходит ошибка:
-  //
-  // вместо “падения” сервера
-  // она перехватывается этим фильтром
-  //
-  // Он:
-  //
-  // форматирует ошибку в нормальный ответ
-  // может логировать её
-  // отправляет понятный JSON клиенту
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -95,36 +82,8 @@ async function bootstrap() {
   initSwagger(app);
   setCorsPolicy(app);
   app.use(requestLoggingMiddleware);
-  // Это логирование запросов.
-  //
-  // Каждый раз, когда кто-то обращается к твоему серверу (GET, POST и т.д.), этот middleware:
-  //
-  // записывает информацию о запросе (например: путь, метод, время, иногда тело запроса)
-  // помогает тебе видеть, что происходит на сервере
-  //
-  // 👉 Проще: “журнал входящих запросов”
   app.use(compression());
-  // Это сжатие ответов сервера.
-  //
-  // Когда сервер отправляет данные клиенту (например JSON), они могут быть:
-  //
-  // большими
-  // медленными для передачи
-  //
-  // compression() сжимает ответ (gzip / deflate), чтобы:
-  //
-  // быстрее отправлялось
-  // меньше трафика использовалось
   app.use(helmet());
-  // Это защита HTTP-заголовков.
-  //
-  // helmet автоматически добавляет безопасные заголовки, которые:
-  //
-  // уменьшают риск XSS-атак
-  // убирают опасные/лишние заголовки
-  // улучшают базовую безопасность сервера
-  //
-  // 👉 Проще: “включает базовую защиту сервера от типичных веб-атак”
 
   await app.listen(appConfig.port, () => {
     const url = `http://${appConfig.host}:${appConfig.port}`;
