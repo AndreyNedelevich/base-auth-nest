@@ -14,7 +14,6 @@ import { RepositoryModule } from './repository/repository.module';
       load: [configuration],
       isGlobal: true,
     }),
-    // Он подключает систему конфигурации приложения (env + config-файлы)
     PostgresModule,
     RedisModule,
     RepositoryModule,

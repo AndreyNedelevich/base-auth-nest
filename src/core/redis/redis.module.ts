@@ -22,8 +22,6 @@ const redisProvider: Provider = {
 
 @Module({
   providers: [redisProvider, RedisService],
-  // что создать внутри этого модуля
   exports: [redisProvider, RedisService],
-  // “что разрешено использовать в других модулях”
 })
 export class RedisModule {}

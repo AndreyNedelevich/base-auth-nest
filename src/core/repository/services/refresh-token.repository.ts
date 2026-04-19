@@ -8,8 +8,6 @@ export class RefreshTokenRepository extends Repository<RefreshTokenEntity> {
   constructor(private readonly dataSource: DataSource) {
     super(RefreshTokenEntity, dataSource.manager);
   }
-  // создаёт объект токена
-  // сохраняет его в БД
   public async saveToken(
     userId: string,
     deviceId: string,
@@ -23,7 +21,7 @@ export class RefreshTokenRepository extends Repository<RefreshTokenEntity> {
       }),
     );
   }
-  // “есть ли такой токен в базе?”
+
   public async isTokenExist(token: string): Promise<boolean> {
     return await this.exist({
       where: { refreshToken: token },
