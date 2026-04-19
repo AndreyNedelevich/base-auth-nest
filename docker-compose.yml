@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ./src:/app/src
+    ports:
+      - '${APP_PORT:-3000}:3000'
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16.1-alpine
+    ports:
+      - '${POSTGRES_PORT_EXTERNAL:-5433}:5432'
+    environment:
+      POSTGRES_USER: '${POSTGRES_USER:-user}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-password}'
+      POSTGRES_DB: '${POSTGRES_DB:-base-auth}'
+    volumes:
+      - base-auth-postgres:/var/lib/postgresql/base-auth
+
+  redis:
+    image: redis:7.2.3-alpine
+    ports:
+      - '${REDIS_PORT_EXTERNAL:-6379}:6379'
+    command: >
+      --requirepass '${REDIS_PASSWORD:-redispass}'
+    restart: unless-stopped
+
+volumes:
+  base-auth-postgres:
